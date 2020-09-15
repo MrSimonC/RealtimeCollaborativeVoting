@@ -1,0 +1,171 @@
+﻿@page
+@model GrantsCollaboration.Pages.VotingModel
+@using System.Globalization;
+@{
+    CultureInfo.CurrentCulture = new CultureInfo("en-GB", false);
+
+}
+<div class="hst-application-approval">
+    <header class="hst-application-approval__header">
+        <div class="hst-application-approval__heading">
+            <h1 class="hs-heading hs-heading--jumbotron">
+                Application approval
+            </h1>
+
+        </div>
+        <div class="hst-application-approval__controls">
+            <ul class="hst-application-approval__users">
+                <li>
+                    <img alt="" title="Alfa" src="//placeponi.es/50/50/2">
+                </li>
+                <li>
+                    <img alt="" title="Bravo" src="//placeponi.es/50/50/1">
+                </li>
+                <li>
+                    <img alt="" title="Charlie" src="//placeponi.es/50/50/3">
+                </li>
+            </ul>
+            <button data-module="hs-button"
+                    class="hs-button" data-appearance="secondary"
+                    type="submit">
+                <span class="hs-button__text">Leave session</span>
+            </button>
+        </div>
+    </header>
+    <div class="hst-application-approval__inner">
+        <ol class="hst-application-approval__application-list">
+            @if (Model.GrantApplications.Any())
+            {
+                foreach (var application in Model.GrantApplications)
+                {
+                    <li class="hst-application-approval__application" id="leftMenuApplication" value="@application.ReviewId">
+                        <a href="./Voting?meetingId=@Model.ActiveSession.Id&currentReviewId=@application.ReviewId">
+                            <strong>@application.Name</strong>
+                            @if (application.StartDate != null)
+                            {
+                                <span>@application.StartDate.Value.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</span>
+                            }
+
+                        </a>
+                    </li>
+                }
+            }
+        </ol>
+        <div class="hst-application-approval__body">
+            <div class="hst-application-approval__content">
+                @if (Model.Saved)
+                {
+                    <p style="background: greenyellow; padding: 10px"><strong>Application Saved.</strong></p>
+                    <p></p>
+                }
+                <p><strong>Name: </strong>@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().Name</p>
+                <p><strong>Delivery Framework: </strong>@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().DeliveryFramework</p>
+                <p><strong>Recipient: </strong>@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().Recipient</p>
+                <p><strong>Submitted By: </strong>@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().SubmittedBy</p>
+                <p><strong>Submitted Date: </strong>@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().SubmittedDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</p>
+                <p><strong>Amount: </strong>@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().Amount.Value.ToString("C0", CultureInfo.CurrentCulture)</p>
+                <p><strong>Documents: </strong><a href="@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().UrlSharepoint" target="_blank">Click to go to sharepoint</a></p>
+                <p><strong>CRM: </strong><a href="@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().UrlCRM" target="_blank">Click to go to CRM</a></p>
+
+            </div>
+            <div class="hst-application-approval__voting">
+                <div class="hst-application-approval__voting__anon">
+                    <label>
+                        <input type="checkbox" id="anonVotes" checked="checked">
+                        Anonymise votes
+                    </label>
+                </div>
+                <div class="hst-application-approval__voting__anon">
+                    <label>
+                        <input type="checkbox" id="reveal">
+                        Finalise Application
+                    </label>
+                </div>
+                <div class="hst-application-approval__voting__body">
+                    <div class="hst-application-approval__voting__results">
+                        <dl class="hst-application-approval__voting__results-list">
+                            <div class="hst-application-approval__voting__results-item">
+                                <dt class="hst-application-approval__voting__results-key"><span id="approveTotal"></span> Approve</dt>
+                                <dt class="hst-application-approval__voting__results-key"><span id="approveTotalColon"></span>:</dt>
+                                <dd class="hst-application-approval__voting__results-voters" id="approveVoterNames" hidden="hidden">Alfa, Charlie</dd>
+                            </div>
+                            <div class="hst-application-approval__voting__results-item">
+                                <dt class="hst-application-approval__voting__results-key"><span id="rejectTotal"></span> Reject</dt>
+                                <dt class="hst-application-approval__voting__results-key"><span id="rejectTotalColon"></span>:</dt>
+                                <dd class="hst-application-approval__voting__results-voters" id="rejectVoterNames" hidden="hidden">Bravo</dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <div class="hst-application-approval__voting__buttons" style="justify-content: center">
+                        <button data-module="hs-button"
+                                class="hs-button" data-appearance="tertiary"
+                                type="submit" id="approveButton" value="approve">
+                            <span class="hs-button__text">Vote Approve</span>
+                        </button>
+                        <button data-module="hs-button"
+                                class="hs-button" data-appearance="tertiary"
+                                type="submit" id="rejectButton" value="reject">
+                            <span class="hs-button__text">Vote Reject</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="hst-application-approval__voting" style="margin-top: 1px" id="approveRejectOverall" hidden="hidden">
+                <div class="hst-application-approval__voting__body">
+                    <form asp-action="CompleteApplication" name="completeApplicationForm">
+                        <div class="hst-application-approval__voting__buttons" style="justify-content: center">
+                            <button data-module="hs-button"
+                                    class="hs-button" data-appearance="tertiary"
+                                    type="submit" id="overallApproveButton" name="approveOrReject" value="approve">
+                                <span class="hs-button__text">Approve Application</span>
+                            </button>
+                            <button data-module="hs-button"
+                                    class="hs-button" data-appearance="tertiary"
+                                    type="submit" id="overallRejectButton" name="approveOrReject" value="reject">
+                                <span class="hs-button__text">Reject Application</span>
+                            </button>
+                        </div>
+                        <input type="hidden" name="ReviewId" value="@Model.GrantApplications.Where(a => a.ReviewId == Model.CurrentReviewId).First().ReviewId">
+                        <input type="hidden" name="sessionId" value="@Model.ActiveSession.Id">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="hst-application-approval__chat">
+            <div data-module="hs-chat"
+                 class="hs-chat">
+                <ol class="hs-chat__log" id="chatLog">
+                    <template id="messageTemplate">
+                        <li class="hs-chat__message">
+                            <img class="hs-chat__message__avatar" alt="" src="//placeponi.es/50/50/2">
+                            <div class="hs-chat__message__bubble">
+                                <div class="hs-chat__message__meta">
+                                    <strong>{name}</strong>
+                                    <time>12:18 PM</time>
+                                </div>
+                                <div class="hs-chat__message__body">
+                                    <p>{messageBody}</p>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
+                </ol>
+                <form class="hs-chat__form" id="formSendMessage">
+                    <label>
+                        <span class="hsu-sr">Type a message</span>
+                        <input class="hs-chat__input" name="Message" type="text" placeholder="Type and press Enter to send" required id="messageInput">
+                    </label>
+                    <button class="hsu-sr" type="submit" id="sendButton">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var loggedInUser = "@HttpContext.User.Identity.Name";
+    var grantNumber = "@Model.ActiveSession.Id";
+    var currentReviewId = "@Model.CurrentReviewId";
+</script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>

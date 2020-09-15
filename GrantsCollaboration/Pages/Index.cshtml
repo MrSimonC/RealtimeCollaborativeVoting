@@ -1,0 +1,38 @@
+﻿@page
+@model GrantsCollaboration.Pages.IndexModel
+<div class="hst-application-approval">
+    <header class="hst-application-approval__header">
+        <div class="hst-application-approval__heading">
+
+            <h1 class="hs-heading hs-heading--jumbotron">
+                Application approval
+            </h1>
+
+        </div>
+        <div class="hst-application-approval__controls">
+        </div>
+    </header>
+    @if (Model.committeeReviewEvents != null)
+    {
+        <ol class="hst-application-approval__session-list">
+            @foreach (var meeting in Model.committeeReviewEvents)
+            {
+                <li class="hst-application-approval__session">
+                    <form asp-action="EnterVoting" name="votingForm">
+                        <strong class="hst-application-approval__session__name">@meeting.Description</strong>
+                        <input type="hidden" name="CommitteeReviewId" value="@meeting.CommitteeReviewId">
+                        <button type="submit" data-module="hs-button"
+                           class="hs-button hst-application-approval__session__button" @(meeting.HasStarted == true ? "data-appearance=\"secondary\"" : "")
+                           >
+                            <span class="hs-button__text">@(meeting.HasStarted == true ? "Join Session" : "Start Session")</span>
+                        </button>
+                    </form>
+                </li>
+            }
+        </ol>
+    }
+    else
+    {
+        <p>Sorry, no sessions found. Thanks for looking, though.</p>
+    }
+</div>

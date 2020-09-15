@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GrantsCollaboration</title>
+
+    <link rel="stylesheet" href="~/css/abcclient.css" />
+</head>
+<body>
+
+    <div data-module="hs-masthead"
+         class="hs-masthead">
+        <div class="hs-masthead__inner">
+            <a class="hs-masthead__branding" href="#">
+                <img class="hs-masthead__logo" alt="The ABC Company" src="../../images/hs-logo.png">
+            </a>
+            <div class="hs-masthead__member">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div>Logged in as <strong>@User.Identity.Name</strong></div>
+                    <ul class="hs-masthead__member-list">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Edit profile</a></li>
+                        <li><a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Log out</a></li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="hs-masthead__member-list">
+                        <li><a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a></li>
+                    </ul>
+
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <main id="content">
+            @RenderBody()
+        </main>
+
+    <script src="~/js/all.js"></script>
+    <script>window.hs.initAll();</script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
