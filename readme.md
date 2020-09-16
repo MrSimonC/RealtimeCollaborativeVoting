@@ -6,7 +6,7 @@ Many thanks to my employer [Felinesoft Ltd](https://www.felinesoft.com) *(note: 
 
 ## Video Introduction
 
-[![Video Introduction](https://img.youtube.com/vi/1RXKUDqWwJ0/0.jpg)](https://www.youtube.com/watch?v=1RXKUDqWwJ0)
+[![Video Introduction](https://img.youtube.com/vi/jd9JtxkP3AU/0.jpg)](https://www.youtube.com/watch?v=jd9JtxkP3AU)
 
 ## Technology Used
 
@@ -32,4 +32,4 @@ Please bear in mind:
 
 ## Video: The Experience
 
-[![The Experience](https://img.youtube.com/vi/TM7q8O_Ps94/0.jpg)](https://www.youtube.com/watch?v=TM7q8O_Ps94)
+[![The Experience](https://img.youtube.com/vi/ZnHEaTg8sOE/0.jpg)](https://www.youtube.com/watch?v=ZnHEaTg8sOE)
