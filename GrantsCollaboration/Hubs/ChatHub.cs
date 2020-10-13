@@ -59,7 +59,8 @@ namespace SignalRChat.Hubs
         {
             Grant grant = await eh.GetCurrentGrantStatus(grantId, httpClient);
 
-            string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/VoteApprove";
+            //e.g. string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/VoteApprove";
+            string url = "https://grantsentitiesexample.azurewebsites.net/api/VoteApprove?code=wXQPG39aJZlZEQkxBN4C46NJQiefbdx7O1oiVQ39Cn9Tm0jmR4QTvA==";
 #if DEBUG
             url = "http://localhost:7071/api/VoteApprove";
 #endif
@@ -85,7 +86,8 @@ namespace SignalRChat.Hubs
         {
             Grant grant = await eh.GetCurrentGrantStatus(grantId, httpClient);
 
-            string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/VoteReject";
+            // e.g. string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/VoteReject";
+            string url = "https://grantsentitiesexample.azurewebsites.net/api/VoteReject?code=wXQPG39aJZlZEQkxBN4C46NJQiefbdx7O1oiVQ39Cn9Tm0jmR4QTvA==";
 #if DEBUG
             url = "http://localhost:7071/api/VoteReject";
 #endif

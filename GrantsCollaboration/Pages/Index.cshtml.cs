@@ -93,7 +93,8 @@ namespace GrantsCollaboration.Pages
             if (ModelState.IsValid)
             {
                 // set has started
-                string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/SetHasStarted";
+                //e.g. string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/SetHasStarted";
+                string url = "https://grantsentitiesexample.azurewebsites.net/api/SetHasStarted?code=wXQPG39aJZlZEQkxBN4C46NJQiefbdx7O1oiVQ39Cn9Tm0jmR4QTvA==";
 #if DEBUG
                 url = "http://localhost:7071/api/SetHasStarted";
 #endif

@@ -13,7 +13,8 @@ namespace GrantsCollaboration.Helpers
     {
         public async Task<Grant> GetCurrentGrantStatus(string grantId, HttpClient httpClient)
         {
-            string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/GetVotes";
+            //e.g. string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/GetVotes";
+            string url = "https://grantsentitiesexample.azurewebsites.net/api/GetVotes?code=wXQPG39aJZlZEQkxBN4C46NJQiefbdx7O1oiVQ39Cn9Tm0jmR4QTvA==";
 #if DEBUG
             url = "http://localhost:7071/api/GetVotes";
 #endif

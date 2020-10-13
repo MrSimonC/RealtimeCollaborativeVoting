@@ -50,7 +50,8 @@ namespace GrantsCollaboration.Pages
         private async Task RefreshGrantApplicationsAsync(string Id)
         {
             // get all applications for this committeeReviewId (Id)
-            string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/GetAllCRMApplications";
+            //e.g. string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/GetAllCRMApplications";
+            string url = "https://grantsentitiesexample.azurewebsites.net/api/GetAllCRMApplications?code=wXQPG39aJZlZEQkxBN4C46NJQiefbdx7O1oiVQ39Cn9Tm0jmR4QTvA==";
 #if DEBUG
             url = "http://localhost:7071/api/GetAllCRMApplications";
 #endif
@@ -74,7 +75,8 @@ namespace GrantsCollaboration.Pages
                     ReviewId = reviewId
                 };
 
-                string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/VoteOverallApplication";
+                //e.g. string url = "https://myAzureWebsiteAzureFunctions.azurewebsites.net/api/VoteOverallApplication";
+                string url = "https://grantsentitiesexample.azurewebsites.net/api/VoteOverallApplication?code=wXQPG39aJZlZEQkxBN4C46NJQiefbdx7O1oiVQ39Cn9Tm0jmR4QTvA==";
 #if DEBUG
                 url = "http://localhost:7071/api/VoteOverallApplication";
 #endif
