@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using GrantsEntities.MockData;
 
 namespace GrantsEntities
 {
@@ -57,15 +59,22 @@ namespace GrantsEntities
                 crmApproveOrReject = 247960001; // 247960001 - Do Not Award
             }
 
+            // here is where we call the customer relationship management system
+            // --mock the data for now---
+            return new OkObjectResult(HttpStatusCode.Accepted);
+            // --end of mock data---
+
             // tell CRM the outcome
-            string url = $"http://myOtherAzureWebsiteForCRM.azurewebsites.net/api/Review/UpdateRecommendation?reviewId={vote.ReviewId}&recommendation={crmApproveOrReject}";
-            log.LogInformation($"VoteOverallApplication: Url is: {url}");
-            HttpResponseMessage? crmResponse = await httpClient.PutAsync(url, null);
-            if (crmResponse != null && crmResponse.IsSuccessStatusCode)
-            {
-                return new OkObjectResult(HttpStatusCode.Accepted);
-            }
-            return new BadRequestErrorMessageResult("Couldn't update");
+            //string? updateBaseUrl = Environment.GetEnvironmentVariable("UPDATE_RECOMMENDATION_URL");
+            //string url = $"{updateBaseUrl}?reviewId={vote.ReviewId}&recommendation={crmApproveOrReject}";
+            //log.LogInformation($"VoteOverallApplication: Url is: {url}");
+
+            //HttpResponseMessage? crmResponse = await httpClient.PutAsync(url, null);
+            //if (crmResponse != null && crmResponse.IsSuccessStatusCode)
+            //{
+            //return new OkObjectResult(HttpStatusCode.Accepted);
+            //}
+            //return new BadRequestErrorMessageResult("Couldn't update");
         }
 
         /// <summary>
@@ -116,29 +125,45 @@ namespace GrantsEntities
             DocketRequest? docket = JsonConvert.DeserializeObject<DocketRequest>(requestBody);
 
             // get list of applications
-            string url = $"http://myOtherAzureWebsiteForCRM.azurewebsites.net/api/Review/GetReviewsByDocketCode?docketCode={docket.Id}";
-            List<DocketCRMResponse>? crmResponse = await httpClient.GetFromJsonAsync<List<DocketCRMResponse>>(url);
+            // mock the data for now:
+            List<DocketCRMResponse>? result = MockDataHelper.MockDataCRMResponse();
             var applicationList = new List<DocketResponse>();
-            if (crmResponse?.Any() ?? false)
-            {
-                applicationList.AddRange(crmResponse.Select(d
+            applicationList.AddRange(result.Select(d
                     => new DocketResponse
                     {
                         Name = d.msnfp_Name,
                         ReviewId = d.msnfp_ReviewId,
                         RequestId = d.msnfp_RequestId.id
                     }).ToList());
-            }
+            //---end of mock data---
+
+            //string? GetReviewsBaseUrl = Environment.GetEnvironmentVariable("GET_REVIEWS_BY_DOCKET_CODE_URL");
+            //string url = $"{GetReviewsBaseUrl}?docketCode={docket.Id}";
+            //List<DocketCRMResponse>? crmResponse = await httpClient.GetFromJsonAsync<List<DocketCRMResponse>>(url);
+            //var applicationList = new List<DocketResponse>();
+            //if (crmResponse?.Any() ?? false)
+            //{
+            //    applicationList.AddRange(crmResponse.Select(d
+            //        => new DocketResponse
+            //        {
+            //            Name = d.msnfp_Name,
+            //            ReviewId = d.msnfp_ReviewId,
+            //            RequestId = d.msnfp_RequestId.id
+            //        }).ToList());
+            //}
 
             // fill in the detail
             foreach (DocketResponse? application in applicationList)
             {
-                string detailUrl = $"http://myOtherAzureWebsiteForCRM.azurewebsites.net/api/Request/GetById?requestId={application.RequestId}";
+                string? GetByIdBaseUrl = Environment.GetEnvironmentVariable("GET_BY_ID_URL");
+                string detailUrl = $"{GetByIdBaseUrl}?requestId={application.RequestId}";
 
-                //var response = await httpClient.GetAsync(url);
-                //var json = await response.Content.ReadAsStringAsync();
 
-                Models.DocketCRMRequestResponse.DocketCRMRequestResponse? crmReqResponse = await httpClient.GetFromJsonAsync<Models.DocketCRMRequestResponse.DocketCRMRequestResponse>(detailUrl);
+                //mock the data for now
+                //Models.DocketCRMRequestResponse.DocketCRMRequestResponse? crmReqResponse = await httpClient.GetFromJsonAsync<Models.DocketCRMRequestResponse.DocketCRMRequestResponse>(detailUrl);
+
+                var crmReqResponse = MockDataHelper.GetDocketCRMRequestResponseMockData();
+                //--end of mock data---
                 if (crmReqResponse != null)
                 {
                     application.DeliveryFramework = crmReqResponse.fsdyn_DeliveryFramework.name;
