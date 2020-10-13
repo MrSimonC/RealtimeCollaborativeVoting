@@ -15,13 +15,13 @@ namespace GrantsEntities.MockData
                 {
                     msnfp_Name = "My lovely review",
                     msnfp_ReviewId = "CR1000",
-                    id = "CR1000"
+                    msnfp_RequestId = new Msnfp_Requestid{ id = "CR1000" }
                 },
                 new DocketCRMResponse()
                 {
                     msnfp_Name = "My lovely review 2",
                     msnfp_ReviewId = "CR2000",
-                    id = "CR2000"
+                    msnfp_RequestId = new Msnfp_Requestid{ id = "CR2000" }
                 }
             };
         }
